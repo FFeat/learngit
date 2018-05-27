@@ -163,7 +163,7 @@ B/s结构中需要传递变量值
 	{"ctrlName":"/Base/","allUrl":]},
 	{"ctrlName":"/Home/","allUrl":
 		[{"actionUrl":"/Home/Index"},{"actionUrl":"/Home/GetNoteInfoById"},{"actionUrl":"/Home/GetAllBasicNote"},{"actionUrl":"/Home/GetAllWinformNote"},{"actionUrl":"/Home/GetAllWebformNote"},{"actionUrl":"/Home/GetAllAspmvcNote"}]},{"ctrlName":"/Login/","allUrl":[{"actionUrl":"/Login/Index"}]},{"ctrlName":"/RoleInfo/","allUrl":[{"actionUrl":"/RoleInfo/Index"},{"actionUrl":"/RoleInfo/Details"},{"actionUrl":"/RoleInfo/Add"},{"actionUrl":"/RoleInfo/Edit"},{"actionUrl":"/RoleInfo/Delete"}]},{"ctrlName":"/UserInfo/","allUrl":[{"actionUrl":"/UserInfo/Index"},{"actionUrl":"/UserInfo/Add"},{"actionUrl":"/UserInfo/Edit"},{"actionUrl":"/UserInfo/Delete"},{"actionUrl":"/UserInfo/SetRole"},{"actionUrl":"/UserInfo/ProcessSetRole"}]}]}	
-		
+		hahahah
 		
 		
 		
