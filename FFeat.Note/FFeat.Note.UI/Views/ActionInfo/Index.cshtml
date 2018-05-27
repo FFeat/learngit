@@ -1,0 +1,101 @@
+﻿@model IEnumerable<FFeat.Note.Model.ActionInfo>
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    #pagingNavigate {
+        /*position: absolute;
+        left: 800px;*/
+        float: right;
+    }
+
+    .pageLink {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        color: white;
+        font-size: 70%;
+        /*float:right;*/
+        text-align: right;
+    }
+
+    .cpb {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        margin: 1px;
+        color: #fff;
+        background-color: #207d59;
+    }
+</style>
+<script>
+    $(function () {
+        $(".delte").on("click", function () {
+            if (confirm("确定删除吗？")) {
+                var id = $(this).attr("id");
+                $.get("/ActionInfo/Delete", { id: id }, function (data) {
+                    if (data = "ok") {
+                        window.location.reload();
+                    }
+                    else {
+                        alert(data);
+                    }
+                })
+            }
+        });
+
+    })
+</script>
+<div class="container" id="page-content">
+    <a href="/home/index" class="site-brand"><img src="~/images/logo.png" alt="返回首页"></a>
+    <h2>权限信息列表</h2>
+
+    <p>
+        @Html.ActionLink("添加新权限", "Add", new { href = "" }, new { @class = "ActionAdd" })
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                权限名
+            </th>
+            <th>
+                权限URL
+            </th>
+            <th>
+                提交时间
+            </th>
+
+            <th>
+                备注
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTime)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remark)
+                </td>
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.Id }) |
+                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                    @Html.ActionLink("删除", "", new { id = item.Id }, new { @class = "delte", @id = item.Id, href = "javascript:void(0);" })
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div id="pagingNavigate">
+        @Html.ShowPageNavigate((int)ViewData["pageIndex"], (int)ViewData["pageSize"], (int)ViewData["total"])
+    </div>
+</div>

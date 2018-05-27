@@ -1,0 +1,386 @@
+﻿@model IEnumerable<FFeat.Note.Model.UserInfo>
+<style>
+    #pagingNavigate {
+        /*position: absolute;
+        left: 800px;*/
+        float: right;
+    }
+
+    .pageLink {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        color: white;
+        font-size: 70%;
+        /*float:right;*/
+        text-align: right;
+    }
+
+    .cpb {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        margin: 1px;
+        color: #fff;
+        background-color: #207d59;
+    }
+
+    * {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .pop {
+        display: none;
+        width: 373px;
+        min-height: 470px;
+        max-height: 750px;
+        height: 750px;
+        position: absolute;
+        top: 1px;
+        left: 440px;
+        bottom: 0;
+        right: 0;
+        /*margin: auto;*/
+        padding: 25px;
+        z-index: 130;
+        border-radius: 8px;
+        background-color: #c1e6c6;
+        box-shadow: 0 3px 18px rgba(100, 0, 0, .5);
+    }
+
+    .pop-top {
+        height: 40px;
+        width: 100%;
+        border-bottom: 1px #E5E5E5 solid;
+    }
+
+        .pop-top h2 {
+            float: left;
+            display: block;
+        }
+
+        .pop-top span {
+            float: right;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+        }
+
+    .pop-foot {
+        height: 50px;
+        line-height: 50px;
+        width: 100%;
+        margin-bottom: 0px;
+        border-top: 1px #E5E5E5 solid;
+        text-align: right;
+        float: none;
+    }
+
+    .pop-save {
+        padding: 8px 15px;
+        margin: 15px 5px;
+        border: none;
+        border-radius: 5px;
+        background-color: #337AB7;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .pop-cancel {
+        padding: 8px 15px;
+        margin: 15px 5px;
+        border: none;
+        border-radius: 5px;
+        background-color: #337AB7;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .pop-cancel {
+        background-color: #FFF;
+        border: 1px #CECECE solid;
+        color: #000;
+    }
+
+    .pop-content {
+        height: 89%;
+        color: black;
+    }
+
+    .pop-content-left {
+        float: left;
+    }
+
+    .pop-content-right {
+        width: 90%;
+        float: left;
+        padding-top: 20px;
+        padding-left: 20px;
+        font-size: 16px;
+        line-height: 35px;
+    }
+
+    .bgPop {
+        display: none;
+        position: absolute;
+        z-index: 129;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.2);
+    }
+
+    input[id^="checkbox-2-"] + label {
+        background-color: #F37900;
+        padding: 18px 20px 18px 23px;
+        box-shadow: inset 0 50px 37px -30px rgba(255, 222, 197, 0.3), 0 0 13px rgba(0, 0, 0, 0.6);
+        border-radius: 1000px;
+        display: inline-block;
+        position: relative;
+        border-top: 1px solid #ECA14F;
+        margin-right: 30px;
+        margin-bottom: 50px;
+        color: #FFF;
+        font-size: 1.7em;
+        width: 213px;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid #552B09;
+    }
+
+    [id^="checkbox-2-"] + label:hover {
+        border-top: 1px solid #FC8C1E;
+        background: #FC8C1E;
+        box-shadow: inset 0 -50px 37px -30px rgba(255, 222, 197, 0.07), 0 0 13px rgba(0, 0, 0, 0.6);
+    }
+
+    [id^="checkbox-2-"] + label:active {
+        border-top: none;
+        background: #FC8C1E;
+        padding: 19px 20px 18px 23px;
+        box-shadow: inset 0 3px 8px rgba(129, 69, 13, 0.3), inset 0 -50px 37px -30px rgba(255, 222, 197, 0.07), 0 0 13px rgba(0, 0, 0, 0.6);
+    }
+
+    [id^="checkbox-2-"] + label:after {
+        content: ' ';
+        border-radius: 100px;
+        width: 32px;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        box-shadow: inset 0px 16px 40px rgba(0, 0, 0, 0.4);
+        height: 32px;
+    }
+
+    [id^="checkbox-2-"] + label:before {
+        content: ' ';
+        border-radius: 100px;
+        width: 20px;
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        z-index: 999;
+        box-shadow: inset 0px 16px 40px #FFF;
+        height: 20px;
+        display: none;
+    }
+
+    [id^="checkbox-2-"]:checked + label:before {
+        display: block;
+    }
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    .center {
+        float: right;
+    }
+</style>
+<script>
+    $(function () {
+        $(".delete").on("click", function () {
+            if (confirm("确定删除吗？")) {
+                var id = $(this).attr("id");
+                $.post("/UserInfo/Delete", { id: id }, function (data) {
+                    if (data == "ok") {
+                        alert("删除成功");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("删除失败,请先清空该数据的关联数据");
+                    }
+                })
+            }
+
+        });
+        //设置特殊权限
+        //$(".SpecialSet").on("click", function () {
+        //    var id = $(this).next().attr("id");
+        //});
+
+
+        //角色设置 打开对话框
+        $(".RoleSet").on("click", function () {
+            var id = $(this).next().attr("id");
+            $('.namaSpan').remove();
+            $(".role").remove();
+            //$("label").remove();
+            $.get("/UserInfo/SetRole/", { id: id }, function (data) {
+                CreateSetRole(data);
+            });
+        });
+        //角色设置，保存并关闭对话框
+        $(".pop-save").click(function () {
+
+            var roleIds = "";
+
+            $("input:checkbox[class=role]:checked").each(function (i) {
+                if (i == 0) {
+                    roleIds = $(this).val();
+                } else {
+                    roleIds += ("," + $(this).val());
+                }
+            });
+
+            $.post("/UserInfo/ProcessSetRole", { id: userId, RoleId: roleIds }, function (data) {
+                if (data == "ok") {
+                    alert("修改成功");
+                    $(".pop").hide();
+                } else {
+                    alert(data);
+                }
+
+            });
+        });
+
+        //关闭弹框
+        $(".pop-close").click(function () {
+            $(".pop").hide();
+        });       //按esc键关闭弹窗
+        $(document).keyup(function (e) {
+            var key = e.which;
+            if (key == 27) {
+                $('.bgPop,.pop').hide();
+            }
+        });
+    })
+
+
+
+
+    var userId;
+    //初始化角色设置弹框
+    function CreateSetRole(data) {
+        var name = data.user.UserName;
+        userId = data.user.Id;
+        var nameStr = "<span class='namaSpan' id=" + data.user.Id + ">给&nbsp;<strong>" + name + "</strong>&nbsp;添加角色：</span>";
+        $('.pop-content-left').append(nameStr);
+        for (var i in data.role) {
+            var roleName = data.role[i].RoleName;
+            var roleId = data.role[i].Id;
+            var inarray = $.inArray(roleId, data.exRole)
+            if (inarray >= 0) {
+                var string = " <input class='role' value='" + roleId + "' checked='checked' type='checkbox' id='checkbox-2-" + roleId + "' /> <label  class='role' for='checkbox-2-" + roleId + "'>" + roleName + "</label>";
+
+            } else {
+                var string = " <input class='role' value='" + roleId + "' type='checkbox' id='checkbox-2-" + roleId + "' /> <label  class='role' for='checkbox-2-" + roleId + "'>" + roleName + "</label>";
+            }
+            $(".center").append(string);
+            $(".pop").show();
+        }
+
+
+
+    }
+</script>
+<div class="container" id="page-content">
+
+
+    <a href="/home/index" class="site-brand"><img src="~/images/logo.png" alt="返回首页"></a>
+
+    <p>
+        @Html.ActionLink("新增", "Add")
+    </p>
+
+    <table class="table">
+        <tr>
+            <th>
+                用户名
+            </th>
+
+            <th>
+                登录时间
+            </th>
+            <th>
+                创建时间
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoginTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTime)
+                </td>
+
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.Id }) |
+
+                    <a href="javascript:void(0);" class="RoleSet">角色设置</a>|
+                    @Html.ActionLink("设置特殊权限", "SetSpecial", new { id = item.Id }, new { @class = "Special", @id = item.Id})|
+                    @Html.ActionLink("删除", "", new { id = item.Id }, new { @class = "delete", @id = item.Id, href = "javascripte:void(0);" })
+
+                </td>
+            </tr>
+        }
+
+
+
+    </table>
+    <!--弹出框开始-->
+    <div class="pop">
+        <div class="pop-top">
+            <h2 id="title"></h2>
+            <span class="pop-close">Ｘ</span>
+        </div>
+        <div class="pop-content">
+
+            <div class="pop-content-left">
+                <span id="subTimeSpan"></span>
+                <img src="" alt="" class="teathumb">
+            </div>
+
+            <div class="pop-content-right" style="height:500px;overflow:auto">
+                <span id="contentSpan"></span>
+                <div class="holder">
+                    <!--放置多选框区域-->
+                    <div class="center" style="width: 269px;">
+
+                    </div>
+                    <!--放置多选框区域结束-->
+                </div>
+            </div>
+        </div>
+        <div class="pop-foot">
+
+            <input type="button" value="保存" class="pop-save" />
+            <input type="button" value="关闭" class="pop-cancel pop-close" />
+
+        </div>
+
+    </div> <!--弹出框结束-->
+
+
+    <div id="pagingNavigate">
+        @Html.ShowPageNavigate((int)ViewData["pageIndex"], (int)ViewData["pageSize"], (int)ViewData["total"])
+    </div>
+</div>

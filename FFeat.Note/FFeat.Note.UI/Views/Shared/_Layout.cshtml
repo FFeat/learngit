@@ -1,0 +1,124 @@
+﻿
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>FaiFeat-学而无涯</title>
+    <meta name="description" content=".net">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+
+    <script>
+        $(function () {
+
+            //点击切换用户面板
+            $(".fa-user").click(function () {
+                $(".userInfo").toggle();
+            });
+            //点击切换设置下拉面板
+            $(".fa-cog").click(function () {
+                $(".setting").toggle();
+            });
+            //点击页面其他位置隐藏下拉框
+            $(document).mouseup(function (e) {
+                if ($(e.target).closest(".setting").length == 0) {
+                    $(".setting").hide();
+                } if ($(e.target).closest(".userInfo").length == 0) {
+                    $(".userInfo").hide();
+                }
+            })
+            //登出
+            $("#logout").click(function (data) {
+                $.get("/Login/Logout", {}, function (data) {
+                    if (data == "ok") {
+                        window.location.href = "/home/index";
+                    }
+                });
+            })
+
+
+        });
+
+    </script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="site-bg"></div>
+    <div class="site-bg-overlay"></div>
+
+    <!-- TOP HEADER -->
+    <div class="top-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <p class="phone-info">Call me: <a href="#">176 0828 9382</a></p>
+                </div>
+                @*右上角图标*@
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="social-icons">
+                        <ul>
+                            <li><a href="javascript:void(0)" class="fa fa-user"></a></li>
+                            <li><a href="/NoteInfo/Index" class="fa fa-heart" title="添加笔记"></a></li>
+                            <li><a href="javascript:void(0)" class="fa fa-weibo" title="联系微博"></a></li>
+                            <li><a href="javascript:void(0)" class="fa fa-cog fa-spin" title="设置"></a> </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .top-header -->
+    <!--导航页-->
+    <div class="Navigation">
+
+        <div class="userInfo">
+            <ul class="dropUser">
+                <li><a href="javascript:void(0)" class="fa fa-user-md" title="暂无">个人中心 </a></li>
+                <li><a href="javascript:void(0)" id="logout" class="fa fa-times">退出</a></li>
+            </ul>
+        </div>
+
+        <div class="setting">
+            <ul class="dropSetting">
+                <li id="userManage"><a href="/UserInfo/index" class="fa fa-users">用户管理</a> </li>
+                <li id="actionManage"><a href="/ActionInfo/index" class="fa fa-wrench">权限管理</a>  </li>
+                <li id="roleManage"><a href="/RoleInfo/index" class="fa fa-child"> 角色管理 </a> </li>
+            </ul>
+        </div>
+    </div> <!--导航页结束-->
+
+
+    @RenderBody()
+
+
+
+
+    <!-- SITE-FOOTER -->
+    <div class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Copyright &copy; 2018 Will be better |  <a href="http://www.faithfeat.com/" target="_blank" title="FFeat">Feat 个人网站</a></p>
+                </div>
+            </div>
+        </div>
+    </div> <!-- .site-footer -->
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/master")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

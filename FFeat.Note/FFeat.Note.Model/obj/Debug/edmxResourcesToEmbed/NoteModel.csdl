@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="NoteModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="NoteModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="UserInfo" EntityType="NoteModel.UserInfo" />
+    <EntitySet Name="RoleInfo" EntityType="NoteModel.RoleInfo" />
+    <EntitySet Name="ActionInfo" EntityType="NoteModel.ActionInfo" />
+    <EntitySet Name="R_UsreInfo_ActionInfo" EntityType="NoteModel.R_UsreInfo_ActionInfo" />
+    <AssociationSet Name="UserInfoRoleInfo" Association="NoteModel.UserInfoRoleInfo">
+      <End Role="UserInfo" EntitySet="UserInfo" />
+      <End Role="RoleInfo" EntitySet="RoleInfo" />
+    </AssociationSet>
+    <AssociationSet Name="RoleInfoActionInfo" Association="NoteModel.RoleInfoActionInfo">
+      <End Role="RoleInfo" EntitySet="RoleInfo" />
+      <End Role="ActionInfo" EntitySet="ActionInfo" />
+    </AssociationSet>
+    <AssociationSet Name="UserInfoR_UsreInfo_ActionInfo" Association="NoteModel.UserInfoR_UsreInfo_ActionInfo">
+      <End Role="UserInfo" EntitySet="UserInfo" />
+      <End Role="R_UsreInfo_ActionInfo" EntitySet="R_UsreInfo_ActionInfo" />
+    </AssociationSet>
+    <AssociationSet Name="ActionInfoR_UsreInfo_ActionInfo" Association="NoteModel.ActionInfoR_UsreInfo_ActionInfo">
+      <End Role="ActionInfo" EntitySet="ActionInfo" />
+      <End Role="R_UsreInfo_ActionInfo" EntitySet="R_UsreInfo_ActionInfo" />
+    </AssociationSet>
+    <EntitySet Name="NoteInfo" EntityType="NoteModel.NoteInfo" />
+    <AssociationSet Name="UserInfoNoteInfo" Association="NoteModel.UserInfoNoteInfo">
+      <End Role="UserInfo" EntitySet="UserInfo" />
+      <End Role="NoteInfo" EntitySet="NoteInfo" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="32" />
+    <Property Name="Pwd" Type="String" Nullable="false" MaxLength="32" />
+    <Property Name="LoginTime" Type="DateTime" Nullable="false" />
+    <Property Name="SubTime" Type="DateTime" Nullable="false" />
+    <Property Name="DelFlag" Type="Int16" Nullable="false" />
+    <NavigationProperty Name="RoleInfo" Relationship="NoteModel.UserInfoRoleInfo" FromRole="UserInfo" ToRole="RoleInfo" />
+    <NavigationProperty Name="R_UsreInfo_ActionInfo" Relationship="NoteModel.UserInfoR_UsreInfo_ActionInfo" FromRole="UserInfo" ToRole="R_UsreInfo_ActionInfo" />
+    <NavigationProperty Name="NoteInfo" Relationship="NoteModel.UserInfoNoteInfo" FromRole="UserInfo" ToRole="NoteInfo" />
+  </EntityType>
+  <EntityType Name="RoleInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="String" Nullable="false" MaxLength="32" />
+    <Property Name="SubTime" Type="DateTime" Nullable="false" />
+    <Property Name="DelFlag" Type="Int16" Nullable="false" />
+    <NavigationProperty Name="UserInfo" Relationship="NoteModel.UserInfoRoleInfo" FromRole="RoleInfo" ToRole="UserInfo" />
+    <NavigationProperty Name="ActionInfo" Relationship="NoteModel.RoleInfoActionInfo" FromRole="RoleInfo" ToRole="ActionInfo" />
+  </EntityType>
+  <EntityType Name="ActionInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ActionName" Type="String" Nullable="false" MaxLength="32" />
+    <Property Name="Url" Type="String" Nullable="false" />
+    <Property Name="SubTime" Type="DateTime" Nullable="false" />
+    <Property Name="DelFlag" Type="Int16" Nullable="false" />
+    <Property Name="Remark" Type="String" Nullable="true" />
+    <NavigationProperty Name="RoleInfo" Relationship="NoteModel.RoleInfoActionInfo" FromRole="ActionInfo" ToRole="RoleInfo" />
+    <NavigationProperty Name="R_UsreInfo_ActionInfo" Relationship="NoteModel.ActionInfoR_UsreInfo_ActionInfo" FromRole="ActionInfo" ToRole="R_UsreInfo_ActionInfo" />
+  </EntityType>
+  <EntityType Name="R_UsreInfo_ActionInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HasPermission" Type="Boolean" Nullable="false" />
+    <Property Name="DelFlag" Type="Int16" Nullable="false" />
+    <Property Name="Remark" Type="String" Nullable="true" />
+    <NavigationProperty Name="UserInfo" Relationship="NoteModel.UserInfoR_UsreInfo_ActionInfo" FromRole="R_UsreInfo_ActionInfo" ToRole="UserInfo" />
+    <Property Name="UserInfoId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActionInfo" Relationship="NoteModel.ActionInfoR_UsreInfo_ActionInfo" FromRole="R_UsreInfo_ActionInfo" ToRole="ActionInfo" />
+    <Property Name="ActionInfoId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="UserInfoRoleInfo">
+    <End Type="NoteModel.UserInfo" Role="UserInfo" Multiplicity="*" />
+    <End Type="NoteModel.RoleInfo" Role="RoleInfo" Multiplicity="*" />
+  </Association>
+  <Association Name="RoleInfoActionInfo">
+    <End Type="NoteModel.RoleInfo" Role="RoleInfo" Multiplicity="*" />
+    <End Type="NoteModel.ActionInfo" Role="ActionInfo" Multiplicity="*" />
+  </Association>
+  <Association Name="UserInfoR_UsreInfo_ActionInfo">
+    <End Type="NoteModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+    <End Type="NoteModel.R_UsreInfo_ActionInfo" Role="R_UsreInfo_ActionInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserInfo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="R_UsreInfo_ActionInfo">
+        <PropertyRef Name="UserInfoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ActionInfoR_UsreInfo_ActionInfo">
+    <End Type="NoteModel.ActionInfo" Role="ActionInfo" Multiplicity="1" />
+    <End Type="NoteModel.R_UsreInfo_ActionInfo" Role="R_UsreInfo_ActionInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActionInfo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="R_UsreInfo_ActionInfo">
+        <PropertyRef Name="ActionInfoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="NoteInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NoteName" Type="String" Nullable="false" />
+    <Property Name="SubTime" Type="DateTime" Nullable="false" />
+    <Property Name="DelFlag" Type="Int16" Nullable="false" />
+    <Property Name="SubContent" Type="String" Nullable="false" />
+    <Property Name="NoteType" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="UserInfo" Relationship="NoteModel.UserInfoNoteInfo" FromRole="NoteInfo" ToRole="UserInfo" />
+    <Property Name="UserInfoId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="UserInfoNoteInfo">
+    <End Type="NoteModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+    <End Type="NoteModel.NoteInfo" Role="NoteInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserInfo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NoteInfo">
+        <PropertyRef Name="UserInfoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

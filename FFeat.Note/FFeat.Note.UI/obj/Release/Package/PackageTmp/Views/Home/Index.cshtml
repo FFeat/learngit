@@ -1,0 +1,229 @@
+﻿<script src="~/Scripts/datepattern.js"></script>
+<link href="~/Content/home/styles.css" rel="stylesheet" />
+<script src="~/Scripts/home/home.js"></script>
+
+<div class="container" id="page-content">
+    <div class="row">
+        <div class="col-md-9 col-sm-12 content-holder">
+            <!-- CONTENT -->
+            <div id="menu-container">
+
+                <div class="logo-holder logo-top-margin">
+                    <a href="javascript:void(0)" class="site-brand"><img src="~/images/logo.png" alt=""></a>
+                </div>
+                <div id="menu-1" class="homepage home-section text-center">
+                    <div class="welcome-text">
+                        <h2>
+                            <strong>
+                                @if (Request.Cookies["name"] != null)
+                                {
+
+                                    @HttpUtility.UrlDecode(Request.Cookies["name"].Value);
+                                }
+                                else
+                                {
+                                    @Html.Label("朋友");
+                                }
+                            </strong>,欢迎回来！
+                        </h2>
+                        <p>生活有很多种过法，我选择发光的那种<br />总有一天，会感谢醒悟的自己，努力的自己。</p>
+
+                    </div>
+                </div>
+                <div id="menu-2" class="content about-section">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-8">
+                            <div class="box-content profile">
+                                <h3 class="widget-title">C#基础</h3>
+                                <div id="basicKnow">
+                                    <table id="BasicTable">
+                                        <thead>
+                                            <tr>
+                                                <th>编 号</th>
+                                                <th>名 称</th>
+                                                <th>时 间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+
+                                    </table>
+                                </div>
+                                <div id="PagingNavigation0"></div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            @*<div class="box-content">*@
+                            <img src="~/images/NotePng.png" alt="招财猫！" />
+                            @*</div>*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5">
+                            <div class="box-content">
+                                <h3 class="widget-title">WebForm</h3>
+                                <div id="webformKnow">
+                                    <table id="webformTable">
+                                        <thead>
+                                            <tr>
+                                                <th>编 号</th>
+                                                <th>名 称</th>
+                                                <th>时 间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+
+                                    </table>
+                                </div><div id="PagingNavigation2"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                            <div class="box-content">
+                                <h3 class="widget-title">ASP.MVC</h3>
+                                <div id="mvcKnow">
+                                    <table id="mvcTable">
+                                        <thead>
+                                            <tr>
+                                                <th>编 号</th>
+                                                <th>名 称</th>
+                                                <th>时 间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+
+                                    </table>
+
+                                </div><div id="PagingNavigation3"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                            <div class="box-content">
+                                <h3 class="widget-title">WinForm</h3>
+                                <div id="winformKnow">
+                                    <table id="winformTable">
+                                        <thead>
+                                            <tr>
+                                                <th>编 号</th>
+                                                <th>名 称</th>
+                                                <th>时 间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+
+                                    </table>
+                                </div><div id="PagingNavigation1"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!--遮罩层-->
+                @*<div class="bgPop"></div>*@
+                <!--弹出框-->
+                <div class="pop">
+                    <div class="pop-top">
+                        <h2 id="title"></h2>
+                        <span class="pop-close">Ｘ</span>
+                    </div>
+                    <div class="pop-content">
+
+                        <div class="pop-content-left">
+                            <span id="subTimeSpan"></span>
+                            <img src="" alt="" class="teathumb">
+                        </div>
+
+                        <div class="pop-content-right" style="overflow:auto">
+                            <span id="contentSpan"></span>
+                        </div>
+                    </div>
+                    <div class="pop-foot">
+                        <input type="button" value="关闭" class="pop-cancel pop-close" />
+                    </div>
+                </div>
+                <div id="menu-3" class="content gallery-section">
+                    <div class="box-content">
+                        <h3 class="widget-title">收藏清单</h3>
+
+                    </div>
+                </div>
+
+                <div id="menu-4" class="content contact-section">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-8">
+                            <div class="box-content">
+                                <h3 class="widget-title">Us  Message</h3>
+
+                                Phone：176-0828-9382<br />
+                                github: <a href="https://github.com/FFeat?tab=repositories" target="_blank">https://github.com/FFeat?tab=repositories</a><br />
+                                Q Q：1170005615
+
+                                @*<form class="contact-form">
+                                        <fieldset>
+                                            <input type="text" class="name" id="name" placeholder="Name...">
+                                        </fieldset>
+                                        <fieldset>
+                                            <input type="email" class="email" id="email" placeholder="Email...">
+                                        </fieldset>
+                                        <fieldset>
+                                            <input type="text" class="subject" id="subject" placeholder="Subject...">
+                                        </fieldset>
+                                        <fieldset>
+                                            <textarea name="message" id="message" cols="30" rows="4" placeholder="Message.."></textarea>
+                                        </fieldset>
+                                        <fieldset>
+                                            <input type="submit" class="button" id="button" value="Send Message">
+                                        </fieldset>
+                                    </form>*@
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="box-content">
+                                <h3 class="widget-title">Stay In Touch</h3>
+                                <p>
+                                    成都人士<br><br>
+                                    爱音乐，<br />
+                                    爱运动,<br />
+                                     爱生活。
+                                    <hr />
+                                </p>
+                                <div class="about-social">
+                                    @*<ul>
+                                            <li><a href="javascript:void(0)" class="fa fa-facebook"></a></li>
+                                            <li><a href="javascript:void(0)" class="fa fa-twitter"></a></li>
+                                            <li><a href="javascript:void(0)" class="fa fa-linkedin"></a></li>
+                                            <li><a href="javascript:void(0)" class="fa fa-dribbble"></a></li>
+                                        </ul>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-3 hidden-sm">
+
+            <nav id="nav" class="main-navigation hidden-xs hidden-sm">
+                <ul class="main-menu">
+                    <li>
+                        <a class="show-1 active homebutton" href="javascript:void(0)"><i class="fa fa-home"></i>Main</a>
+                    </li>
+                    <li>
+                        <a class="show-2 aboutbutton" href="javascript:void(0)" id="note"><i class="fa fa-file-text-o"></i>Note</a>
+                    </li>
+                    <li>
+                        <a class="show-3 projectbutton" href="javascript:void(0)"><i class="fa fa-file-code-o"></i>Demo</a>
+                    </li>
+                    <li>
+                        <a class="show-5 contactbutton" href="javascript:void(0)"><i class="fa fa-mobile-phone"></i>联 系</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>

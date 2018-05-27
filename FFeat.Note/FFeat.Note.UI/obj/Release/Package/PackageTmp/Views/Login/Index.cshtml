@@ -1,0 +1,91 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFeat个人管理系统</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/LoginCss/styles.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            $("#ValiName").hide();
+            $("#ValiPwd").hide();
+            $("#login-button").click(function () {
+                event.preventDefault();
+                var UName = $("#txtName").val();
+                var Pwd = $("#txtPwd").val();
+
+                if (UName == "") {
+                    $("#txtName").attr("placeholder", "用户名不能为空");
+                    return;
+                }
+                if (Pwd == "") {
+                    $("#txtPwd").attr("placeholder", "密码不能为空");
+                    return;
+                }
+                $.post("/Login/Login", { UName: UName, Pwd: Pwd }, function (data) {
+                    if (data == "ok") {
+                        $('form').fadeOut(500);
+                        $('.wrapper').addClass('form-success');
+                        window.location.href = "/Home/Index";
+                    }
+                    else {
+                        alert(data);
+                    }
+                });
+
+
+
+            });
+
+        });
+    </script>
+    <style>
+       a {
+           text-decoration:none;
+           color:#fff;
+           position:relative;
+           left:100px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="wrapper">
+
+        <div class="container">
+            <h1>登录到Note</h1>
+            <form class="form">
+                <input type="text" id="txtName" placeholder="用户名" value="shen"><span id="ValiName"></span>
+                <input type="password" id="txtPwd" placeholder="密码" value="shen"><span id="ValiPwd"></span>
+                <button type="submit" id="login-button">登录</button>
+                <div>@*<a class="register" href="/UserInfo/Add">注册</a>*@</div>
+
+            </form>
+        </div>
+
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+    </div>
+
+
+
+</body>
+</html>

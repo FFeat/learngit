@@ -1,0 +1,131 @@
+﻿@model IEnumerable<FFeat.Note.Model.ActionInfo>
+@using FFeat.Note.Model
+@{
+    ViewBag.Title = "SetSpecial";
+}
+
+@{
+    UserInfo user = ViewBag.User as UserInfo;
+}
+<style>
+    #pagingNavigate {
+        /*position: absolute;
+        left: 800px;*/
+        float: right;
+    }
+
+    .pageLink {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        color: white;
+        font-size: 70%;
+        /*float:right;*/
+        text-align: right;
+    }
+
+    .cpb {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        margin: 1px;
+        color: #fff;
+        background-color: #207d59;
+    }
+</style>
+<script>
+    $(function () {
+
+
+        $.get("/UserInfo/InitialSpecial", { uId: $("#userId").attr("name") }, function (data) {
+            for (var i in data) {
+                if ($.isArray(data)) {
+                    var actionId = data[i].ActionInfoId;
+                    var haspermission = data[i].HasPermission == true ? 1 : 0;
+                } else {
+                    var actionId = data.ActionInfoId;
+                    var haspermission = data.HasPermission == true ? 1 : 0;
+                }
+                $(":radio").each(function () {
+                    //alert($(this).attr("name"));
+                    if ($(this).attr("name") == actionId && $(this).attr("value") == haspermission) {
+                        $(this).attr("checked", "checked");
+                    }
+
+                });
+
+
+
+            }
+        });
+
+
+
+
+
+        //点击按钮允许或拒绝权限
+        $(":radio").click(function () {
+            var uId = $(this).attr("uid");
+            var aId = $(this).attr("name");
+            var heValue = $(this).attr("value");
+            $.post("/UserInfo/ProcessSpecial", { uId: uId, aId: aId, heValue: heValue }, function (data) { })
+        })
+
+        //点击清除按钮，清除权限
+        $(".btnClear").click(function () {
+            if ($(this).siblings(":checked").length > 0) {
+                $.post("/UserInfo/ClearSpecial", { uId: $(this).attr("uId"), aId: $(this).attr("name") }, function (data) {
+
+                });
+                $(this).siblings(":radio").attr("checked", false);
+            }
+        })
+    })
+</script>
+<div class="container" id="page-content">
+    <h2>给 @user.UserName 设置特殊权限</h2>
+    <input type="hidden" id="userId" name="@user.Id" value="" />
+    <table class="table">
+
+        <tr>
+            <th>
+                权限名
+            </th>
+            <th>
+                访问Url权限
+            </th>
+
+            <th>
+                备注
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remark)
+                </td>
+                <td>
+                    <input type="radio" uid="@user.Id" name="@item.Id" id="allow+@item.Id" value="1" />
+                    <label for="allow+@item.Id">允许</label>
+                    <input type="radio" uid="@user.Id" name="@item.Id" id="disallow+@item.Id" value="0" />
+                    <label for="disallow+@item.Id">拒绝</label> |
+                    <input type="button" uid="@user.Id" name="@item.Id" class="btnClear" value="清除" />
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div>
+        @Html.ShowPageNavigate((int)ViewData["pageIndex"], (int)ViewData["pageSize"], (int)ViewData["total"])
+    </div>
+    <div>
+        @Html.ActionLink("返回列表", "Index")
+    </div>
+</div>

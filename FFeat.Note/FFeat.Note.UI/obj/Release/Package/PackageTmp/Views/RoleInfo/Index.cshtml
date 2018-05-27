@@ -1,0 +1,385 @@
+﻿@model IEnumerable<FFeat.Note.Model.RoleInfo>
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    #pagingNavigate {
+        /*position: absolute;
+        left: 800px;*/
+        float: right;
+    }
+
+    .pageLink {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        color: white;
+        font-size: 70%;
+        /*float:right;*/
+        text-align: right;
+    }
+
+    .cpb {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        margin: 1px;
+        color: #fff;
+        background-color: #207d59;
+    }
+
+    * {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .pop {
+        display: none;
+        width: 1086px;
+        min-height: 470px;
+        max-height: 8000px;
+        height: 800px;
+        position: absolute;
+        top: 1px;
+        left: 0px;
+        bottom: 0;
+        right: 0;
+        /*margin: auto;*/
+        padding: 25px;
+        z-index: 130;
+        border-radius: 8px;
+        background-color: #c1e6c6;
+        box-shadow: 0 3px 18px rgba(100, 0, 0, .5);
+    }
+
+    .pop-top {
+        height: 40px;
+        width: 100%;
+        border-bottom: 1px #E5E5E5 solid;
+    }
+
+        .pop-top h2 {
+            float: left;
+            display: block;
+        }
+
+        .pop-top span {
+            float: right;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+        }
+
+    .pop-foot {
+        height: 50px;
+        line-height: 50px;
+        width: 100%;
+        margin-bottom: 0px;
+        border-top: 1px #E5E5E5 solid;
+        text-align: right;
+        float: right;
+    }
+
+    .pop-save {
+        padding: 8px 15px;
+        margin: 15px 5px;
+        border: none;
+        border-radius: 5px;
+        background-color: #337AB7;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .pop-cancel {
+        padding: 8px 15px;
+        margin: 15px 5px;
+        border: none;
+        border-radius: 5px;
+        background-color: #337AB7;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .pop-cancel {
+        background-color: #FFF;
+        border: 1px #CECECE solid;
+        color: #000;
+    }
+
+    .pop-content {
+        height: 89%;
+        color: black;
+    }
+
+    .pop-content-left {
+        float: left;
+    }
+
+    .pop-content-right {
+        width: 100%;
+        float: left;
+        padding-top: 20px;
+        padding-left: 20px;
+        font-size: 16px;
+        line-height: 35px;
+    }
+
+    .bgPop {
+        display: none;
+        position: absolute;
+        z-index: 129;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.2);
+    }
+
+    input[id^="checkbox-2-"] + label {
+        background-color: #F37900;
+        padding: 18px 20px 18px 23px;
+        box-shadow: inset 0 50px 37px -30px rgba(255, 222, 197, 0.3), 0 0 13px rgba(0, 0, 0, 0.6);
+        border-radius: 1000px;
+        display: inline-block;
+        position: relative;
+        border-top: 1px solid #ECA14F;
+        margin-right: 20px;
+        margin-bottom: 15px;
+        color: #FFF;
+        /*font-size: 1.7em;*/
+        width: 100%;
+        float: right;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid #552B09;
+    }
+
+    [id^="checkbox-2-"] + label:hover {
+        border-top: 1px solid #FC8C1E;
+        background: #FC8C1E;
+        box-shadow: inset 0 -50px 37px -30px rgba(255, 222, 197, 0.07), 0 0 13px rgba(0, 0, 0, 0.6);
+    }
+
+    [id^="checkbox-2-"] + label:active {
+        border-top: none;
+        background: #FC8C1E;
+        padding: 19px 20px 18px 23px;
+        box-shadow: inset 0 3px 8px rgba(129, 69, 13, 0.3), inset 0 -50px 37px -30px rgba(255, 222, 197, 0.07), 0 0 13px rgba(0, 0, 0, 0.6);
+    }
+
+    [id^="checkbox-2-"] + label:after {
+        content: ' ';
+        border-radius: 100px;
+        width: 32px;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        box-shadow: inset 0px 16px 40px rgba(0, 0, 0, 0.4);
+        height: 32px;
+    }
+
+    [id^="checkbox-2-"] + label:before {
+        content: ' ';
+        border-radius: 100px;
+        width: 20px;
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        z-index: 999;
+        box-shadow: inset 0px 16px 40px #FFF;
+        height: 20px;
+        display: none;
+    }
+
+    [id^="checkbox-2-"]:checked + label:before {
+        display: block;
+    }
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    .center {
+        width: 20%;
+        display: inline-block;
+        margin-right: 15px;
+        /*word-break: keep-all;
+        white-space: nowrap;*/
+    }
+</style>
+<script>
+    $(function () {
+        //删除角色事件
+        $(".delete").on("click", function () {
+            if (confirm("确定删除吗？")) {
+                var id = $(this).attr("id");
+
+                $.post("/RoleInfo/Delete", { id: id }, function (data) {
+                    if (data == "ok") {
+                        alert('删除成功！');
+                        window.location.reload();
+                    }
+                    else {
+                        alert(data);
+                    }
+                })
+            }
+        });
+
+        //角色选择权限对话框
+        $(".AcionSet").on("click", function () {
+            var id = $(this).next().attr("id");
+            $(".nameSpan").remove();
+            //$('.action').remove();
+            $(".center").remove();
+            $.get("/RoleInfo/ActionSet", { id: id }, function (data) {
+                CreateSetAction(data);
+            })
+            $('.bgPop,.pop').show()
+        })
+
+        //保存对角色的附加权限对话框
+        $(".pop-save").click(function (data) {
+            var actionIds = "";
+            $("input:checkbox[class=action]:checked").each(function (i) {
+                if (i == 0) {
+                    actionIds = $(this).val();
+                } else {
+                    actionIds += ("," + $(this).val());
+                }
+            });
+
+            $.ajax({
+                type: "post",
+                dataType: 'json',
+                url: '/RoleInfo/ProcessSetAction',
+                data: { roleId: roleId, actionIds: actionIds },
+                success: function (data) {
+                    $(".pop").hide();
+                },
+                Error: function () {
+                    alert("修改失败");
+                }
+            });
+            $.post("/RoleInfo/ProcessSetAction", { roleId: roleId, actionIds: actionIds }, function (data) {
+                if (data == "ok") {
+                    $(".pop").hide();
+                    //alert("修改成功");
+
+                } else {
+                    alert("修改成功");
+                }
+            });
+
+        });
+
+        //关闭弹框
+        $(".pop-close").click(function () {
+            $(".pop").hide();
+        })
+        //按esc键关闭弹窗
+        $(document).keyup(function (e) {
+            var key = e.which;
+            if (key == 27) {
+                $('.bgPop,.pop').hide();
+            }
+        })
+    });
+    var roleId;
+    //初始化权限设置框
+    function CreateSetAction(data) {
+        var name = data.role.RoleName;
+        roleId = data.role.Id;
+        var nameStr = "<span class='nameSpan' id='" + roleId + "'>给&nbsp;<strong>" + name + "</strong>附加权限</span>";
+        $('.pop-content-left').append(nameStr);
+        for (var i in data.action) {
+            var actionName = data.action[i].ActionName;
+            var actionId = data.action[i].Id;
+            var inarray = $.inArray(actionId, data.exAction)
+            if (inarray >= 0) {
+                var string = "<div class='center'> <input class='action' value='" + actionId + "' checked='checked' type='checkbox' id='checkbox-2-" + actionId + "' /> <label  class='role' for='checkbox-2-" + actionId + "'>" + actionName + "</label></div>";
+
+            } else {
+                var string = "<div class='center'> <input class='action' value='" + actionId + "' type='checkbox' id='checkbox-2-" + actionId + "' /> <label  class='role' for='checkbox-2-" + actionId + "'>" + actionName + "</label></div>";
+            }
+            $(".holder").append(string);
+            $(".pop").show();
+        }
+    }
+
+</script>
+<div class="container" id="page-content">
+    <a href="/home/index" class="site-brand"><img src="~/images/logo.png" alt="返回首页"></a>
+    <h2>角色信息列表</h2>
+
+    <p>
+        @Html.ActionLink("新建角色", "Add")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                角色名
+            </th>
+            <th>
+                提交时间
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTime)
+                </td>
+
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.Id }) |
+                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                    <a href="javascript:void(0);" class="AcionSet">附加权限</a> |
+                    @Html.ActionLink("删除", "", new { id = item.Id }, new { @class = "delete", href = "javascript:void(0);", @id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div id="pagingNavigate">
+        @Html.ShowPageNavigate((int)ViewData["pageIndex"], (int)ViewData["pageSize"], (int)ViewData["total"])
+    </div>
+
+    <!--弹出框开始-->
+    <div class="pop">
+        <div class="pop-top">
+            <h2 id="title"></h2>
+            <span class="pop-close">Ｘ</span>
+        </div>
+        <div class="pop-content">
+
+            <div class="pop-content-left">
+                <span id="subTimeSpan"></span>
+                <img src="" alt="" class="teathumb">
+            </div>
+
+            <div class="pop-content-right" style="height:600px;overflow:auto">
+                <span id="contentSpan"></span>
+                <div class="holder">
+                    <!--放置多选框区域-->
+                    <!--   <div class="center" style="width: 205px;">
+
+                    </div>-->
+                    <!--放置多选框区域结束-->
+                </div>
+            </div>
+        </div>
+        <div class="pop-foot">
+
+            <input type="button" value="保存" class="pop-save" />
+            <input type="button" value="关闭" class="pop-cancel pop-close" />
+
+        </div>
+
+    </div> <!--弹出框结束-->
+
+</div>

@@ -1,0 +1,106 @@
+﻿@model IEnumerable<FFeat.Note.Model.NoteInfo>
+@using FFeat.Note.Model
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    #pagingNavigate {
+        float: right;
+    }
+
+    .pageLink {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        color: white;
+        font-size: 70%;
+        /*float:right;*/
+        text-align: right;
+    }
+
+    .cpb {
+        border: #207d59 1px solid;
+        padding: 1px 5px;
+        margin: 1px;
+        color: #fff;
+        background-color: #207d59;
+    }
+
+</style>
+<script>
+    $(function () {
+        $(".delete").on("click", function () {
+
+            if (confirm("确定删除吗？")) {
+                var id = $(this).attr("id");
+                $.get("/NoteInfo/Delete", { id: id }, function (data) {
+                    if (data == "ok") {
+                        window.location.reload();
+                    }
+                    else {
+                        alert("删除失败！");
+                    }
+                })
+            }
+            
+        });
+
+    })
+</script>
+<div class="container" id="page-content">
+    <a href="/home/index" class="site-brand"><img src="~/images/logo.png" alt="返回首页"></a>
+    <h2>笔记列表</h2>
+
+    <p>
+        @Html.ActionLink("新建笔记", "Add")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                文章名
+            </th>
+            <th>
+                修改时间
+            </th>
+            <th>
+                文章类别
+            </th>
+            <th>
+                作者
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoteName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTime)
+                </td>
+
+                <td>
+                    @{
+                        var str = (FFeat.Note.Model.EnumNote.NoteTypeEnum)Enum.ToObject(typeof(FFeat.Note.Model.EnumNote.NoteTypeEnum), item.NoteType);
+                        str.ToString();
+                    }
+                    @Html.DisplayFor(modelItem => str)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.UserName)
+                </td>
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("详细", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("删除", "", new { id = item.Id }, new { @class = "delete", @id = item.Id, href = "javascript:void(0);" })
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div id="pagingNavigate">
+        @Html.ShowPageNavigate((int)ViewData["pageIndex"], (int)ViewData["pageSize"], (int)ViewData["total"])
+    </div>
+</div>

@@ -1,0 +1,84 @@
+﻿@model FFeat.Note.Model.UserInfo
+
+@{
+    ViewBag.Title = "Edit";
+}
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script>
+    function afterEdit(data) {
+        if (data == "ok") {
+           
+            window.location.href = "/userinfo/index/";
+        } 
+        else {
+            alert(data);
+        }
+
+    }
+    $(function () {
+        //$(".btn-default").click(function () {
+        //    alert("12312312");
+        //});
+    })
+</script>
+<style>
+    input{
+        color:black;
+    }
+</style>
+<div class="container" id="page-content">
+    <h2>Edit</h2>
+
+    @using (Ajax.BeginForm(new AjaxOptions() { OnSuccess = "afterEdit" }))
+    {
+        @*@Html.AntiForgeryToken()*@
+
+        <div class="form-horizontal">
+            <h4>UserInfo</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserName, "用户名：", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+
+                    @Html.DisplayFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" }, id = "sd" })
+                    @Html.HiddenFor(model => model.UserName)
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Pwd, "密    码：", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(model => model.Pwd)
+                    @*@Html.EditorFor(model => model.Pwd,"密  码", new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.Pwd, "", new { @class = "text-danger" })
+                </div>
+            </div>
+                    @Html.HiddenFor(model => model.LoginTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LoginTime, "", new { @class = "text-danger" })
+   
+
+   
+                    @Html.HiddenFor(model => model.SubTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SubTime, "", new { @class = "text-danger" })
+      
+         
+                    @Html.HiddenFor(model => model.DelFlag, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DelFlag, "", new { @class = "text-danger" })
+  
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="保  存" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("返回列表", "Index")
+    </div>
+</div>
